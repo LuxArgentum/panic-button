@@ -9,7 +9,6 @@
     "repo": "https://github.com/matthew/PanicButton"
   },
   "license": "All-Rights-Reserved",
-  "icon": "assets/panic-button/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
