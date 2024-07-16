@@ -1,5 +1,7 @@
-package com.lux.panicbutton.client;
+package com.lux.panicbutton.client.command;
 
+import com.lux.panicbutton.client.PanicButtonClient;
+import com.lux.panicbutton.client.SafeTeleportLocation;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.entity.player.PlayerEntity;
