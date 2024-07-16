@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "panic-button",
+  "version": "${version}",
+  "name": "Panic Button",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/matthew/PanicButton"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/panic-button/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.lux.panicbutton.client.PanicButtonClient"
+    ],
+    "main": [
+      "com.lux.panicbutton.PanicButton"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
