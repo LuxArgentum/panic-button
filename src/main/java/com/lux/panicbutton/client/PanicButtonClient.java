@@ -8,6 +8,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 public class PanicButtonClient implements ClientModInitializer {
@@ -40,15 +44,27 @@ public class PanicButtonClient implements ClientModInitializer {
     }
 
     private void panicButtonPressed() {
-        double destinationX = safeTeleportLocation.xCoordinate();
-        double destinationY = safeTeleportLocation.yCoordinate();
-        double destinationZ = safeTeleportLocation.zCoordinate();
-
-        teleportPlayer(destinationX, destinationY, destinationZ);
+        teleportPlayer(safeTeleportLocation);
     }
 
-    private void teleportPlayer(double destinationX, double destinationY, double destinationZ) {
-        player.teleport(destinationX, destinationY, destinationZ, false);
+    private void teleportPlayer(SafeTeleportLocation safeTeleportLocation) {
+
+        TeleportTarget teleportTarget = getTeleportTarget(safeTeleportLocation);
+        player.teleportTo(teleportTarget);
+    }
+
+    private static @NotNull TeleportTarget getTeleportTarget(SafeTeleportLocation safeTeleportLocation) {
+        ServerWorld destinationWorld = (ServerWorld) safeTeleportLocation.world();
+        double xCoordinate = safeTeleportLocation.xCoordinate();
+        double yCoordinate = safeTeleportLocation.yCoordinate();
+        double zCoordinate = safeTeleportLocation.zCoordinate();
+        float yaw = safeTeleportLocation.yaw();
+        float pitch = safeTeleportLocation.pitch();
+
+        Vec3d destinationPosition = new Vec3d(xCoordinate, yCoordinate, zCoordinate);
+        Vec3d velocity = new Vec3d(0, 0, 0);
+
+        return new TeleportTarget(destinationWorld, destinationPosition, velocity, yaw, pitch, TeleportTarget.NO_OP);
     }
 
     public ClientPlayerEntity getPlayer() {
