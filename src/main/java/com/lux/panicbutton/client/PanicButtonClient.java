@@ -14,6 +14,8 @@ import net.minecraft.world.TeleportTarget;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
+import static com.lux.panicbutton.PanicButton.LOGGER;
+
 public class PanicButtonClient implements ClientModInitializer {
     // Bound panic teleport to the 'X' key
     KeyBinding panicTeleportButton = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -44,10 +46,13 @@ public class PanicButtonClient implements ClientModInitializer {
     }
 
     private void panicButtonPressed() {
+        LOGGER.info("panic button was pressed");
+
         teleportPlayer(safeTeleportLocation);
     }
 
     private void teleportPlayer(SafeTeleportLocation safeTeleportLocation) {
+        LOGGER.info("attempting to teleport player");
 
         TeleportTarget teleportTarget = getTeleportTarget(safeTeleportLocation);
         player.teleportTo(teleportTarget);

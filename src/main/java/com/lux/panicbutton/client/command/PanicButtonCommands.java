@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
+import static com.lux.panicbutton.PanicButton.LOGGER;
+
 public class PanicButtonCommands {
     private final PanicButtonClient panicButtonClient;
 
@@ -21,31 +23,33 @@ public class PanicButtonCommands {
     private void registerSetSafeTeleportLocationCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("setSafeTeleportLocation")
-                                                    .executes(context -> {
+                    .executes(context -> {
 
-                                                        PlayerEntity player = panicButtonClient.getPlayer();
+                        PlayerEntity player = panicButtonClient.getPlayer();
 
-                                                        World playerWorld = player.getWorld();
-                                                        double playerXCoordinate = player.getX();
-                                                        double playerYCoordinate = player.getY();
-                                                        double playerZCoordinate = player.getZ();
-                                                        float playerYaw = player.getYaw();
-                                                        float playerPitch = player.getPitch();
+                        World playerWorld = player.getWorld();
+                        double playerXCoordinate = player.getX();
+                        double playerYCoordinate = player.getY();
+                        double playerZCoordinate = player.getZ();
+                        float playerYaw = player.getYaw();
+                        float playerPitch = player.getPitch();
 
-                                                        SafeTeleportLocation newSafeTeleportLocation =
-                                                                new SafeTeleportLocation(
-                                                                playerWorld,
-                                                                playerXCoordinate,
-                                                                playerYCoordinate,
-                                                                playerZCoordinate,
-                                                                playerYaw,
-                                                                playerPitch
-                                                        );
-                                                        panicButtonClient.setSafeTeleportLocation(
-                                                                newSafeTeleportLocation);
+                        LOGGER.info("Creating Safe Teleport Location");
 
-                                                        return 1; // Success
-                                                    }));
+                        SafeTeleportLocation newSafeTeleportLocation = new SafeTeleportLocation(
+                                playerWorld,
+                                playerXCoordinate,
+                                playerYCoordinate,
+                                playerZCoordinate,
+                                playerYaw,
+                                playerPitch
+                        );
+                        panicButtonClient.setSafeTeleportLocation(newSafeTeleportLocation);
+
+                        LOGGER.info("Safe Teleport Location Set");
+
+                        return 1; // Success
+                    }));
         });
     }
 }
