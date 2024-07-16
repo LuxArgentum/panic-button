@@ -64,7 +64,13 @@ public class PanicButtonClient implements ClientModInitializer {
         Vec3d destinationPosition = new Vec3d(xCoordinate, yCoordinate, zCoordinate);
         Vec3d velocity = new Vec3d(0, 0, 0);
 
-        return new TeleportTarget(destinationWorld, destinationPosition, velocity, yaw, pitch, TeleportTarget.NO_OP);
+        return new TeleportTarget(destinationWorld,
+                                  destinationPosition,
+                                  velocity,
+                                  yaw,
+                                  pitch,
+                                  TeleportTarget.NO_OP
+        );
     }
 
     public ClientPlayerEntity getPlayer() {
