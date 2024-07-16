@@ -1,5 +1,6 @@
 package com.lux.panicbutton.client;
 
+import com.lux.panicbutton.client.command.PanicButtonCommands;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -10,20 +11,21 @@ import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
 public class PanicButtonClient implements ClientModInitializer {
-    private final ClientPlayerEntity player;
     // Bound panic teleport to the 'X' key
-    KeyBinding panicTeleportButton = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.panic-button.teleport",
-            InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X, "category.panic-button.panic"));
+    KeyBinding panicTeleportButton = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.panic-button.teleport",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_X,
+            "category.panic-button.panic"
+    ));
+    private ClientPlayerEntity player;
     private SafeTeleportLocation safeTeleportLocation;
-
-
-    public PanicButtonClient() {
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        player = minecraftClient.player;
-    }
 
     @Override
     public void onInitializeClient() {
+        MinecraftClient minecraftClient = MinecraftClient.getInstance();
+        player = minecraftClient.player;
+
         registerPanicTeleportEventHandler();
         new PanicButtonCommands(this).registerCommands();
     }
