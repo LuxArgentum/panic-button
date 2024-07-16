@@ -11,7 +11,11 @@ import org.lwjgl.glfw.GLFW;
 
 public class PanicButtonClient implements ClientModInitializer {
     private final ClientPlayerEntity player;
+    // Bound panic teleport to the 'X' key
+    KeyBinding panicTeleportButton = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.panic-button.teleport",
+            InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X, "category.panic-button.panic"));
     private SafeTeleportLocation safeTeleportLocation;
+
 
     public PanicButtonClient() {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
@@ -20,18 +24,14 @@ public class PanicButtonClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        registerPanicButton();
+        registerPanicTeleportEventHandler();
         new PanicButtonCommands(this).registerCommands();
     }
 
-    private void registerPanicButton() {
-        // Bound panic button to the 'X' key
-        KeyBinding panicButton = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.panic-button.panic",
-                InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X, "category.panic-button.panic"));
-
-        // Register what to do when panic button is pressed
+    private void registerPanicTeleportEventHandler() {
+        // Register what to do when panic teleport button is pressed
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (panicButton.wasPressed()) {
+            if (panicTeleportButton.wasPressed()) {
                 panicButtonPressed();
             }
         });
