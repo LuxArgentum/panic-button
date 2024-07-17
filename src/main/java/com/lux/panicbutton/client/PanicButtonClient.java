@@ -4,6 +4,7 @@ import com.lux.panicbutton.client.command.PanicButtonCommands;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -29,9 +30,7 @@ public class PanicButtonClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        player = minecraftClient.player;
-
+        registerClientConnectToServerEventHandler();
         registerPanicTeleportEventHandler();
         new PanicButtonCommands(this).registerCommands();
     }
@@ -39,9 +38,15 @@ public class PanicButtonClient implements ClientModInitializer {
     private void registerPanicTeleportEventHandler() {
         // Register what to do when panic teleport button is pressed
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (panicTeleportButton.wasPressed()) {
+            while(panicTeleportButton.wasPressed()) {
                 panicButtonPressed();
             }
+        });
+    }
+
+    private void registerClientConnectToServerEventHandler() {
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            player = client.player;
         });
     }
 
